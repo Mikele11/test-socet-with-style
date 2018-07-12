@@ -54,13 +54,24 @@
     </div>
 
     <script>
-        var url = "https://socetchat.herokuapp.com";
+        var url = "localhost:3000";
         var socket = io.connect(url);
         var user_name = "";
         var current_room = "";
         
         var rooms=[];
 		//var messages = {};
+
+		function unique(arr) {
+			var obj = {};
+			for (var i = 0; i < arr.length; i++) {
+				var str = arr[i];
+				obj[str] = true; 
+			}
+			
+			return Object.keys(obj); 
+		};
+
 		
         $.ajax({
             url: "/reactlist",
@@ -68,9 +79,12 @@
             data: '',
             cache: false,
             success: function(response){
-                for (var i = 0; i < response.length; i++) {
-                    rooms[i] = response[i].room_id;
-                }
+				for (var i = 0; i < response.length; i++) {
+						rooms[i] = response[i].room_id;
+				}
+				rooms = unique(rooms);
+				console.log('//',rooms)
+				
                 $('#room-list').empty();
                 rooms.forEach((v) => {
                     $('#room-list').append('<a href="#" class="list-group-item room-menu" data-room-id="' + v + '">' + v + '</a>');
