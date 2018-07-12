@@ -1,0 +1,25 @@
+html, body {
+  height: 100%;
+  width: 100%;
+}
+.leftside{
+	overflow: auto;
+	min-height: 100%;
+	background: #b2ccd4 !important;
+	height: 100vh;
+}
+.rightside{
+	height: 100vh;
+	overflow-x: hidden;
+	width: 75% !important;
+	padding-left: 5%;
+	background: #ebebeb;
+}
+.form-control{
+	width: 90% !important;
+}
+/*
+#title2>div:nth-of-type(3){
+	margin-left: 4%;
+}
+*/

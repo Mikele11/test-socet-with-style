@@ -1,0 +1,24 @@
+{
+  "name": "mybook",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+        "angular": "latest",
+        "angular-bootstrap": "0.10.0",
+        "angular-cookies": "latest",
+        "angular-ui-router": "#master",
+        "bootstrap": "3.0.3"
+    },
+  "authors": [
+    "Ilyash Mychailo"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/Mikele11/test",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
