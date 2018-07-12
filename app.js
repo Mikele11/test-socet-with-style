@@ -17,6 +17,16 @@ app.get('/', function(req, res,next) {
     res.sendFile(__dirname + '/index.html');
 });
 
+function unique(arr) {
+	var obj = {};
+	for (var i = 0; i < arr.length; i++) {
+		var str = arr[i];
+		obj[str] = true; 
+	}
+	
+	return Object.keys(obj); 
+};
+
 MongoClient.connect(MONGO_URL, function(err, db){  
   if (err) {
     return console.log(err);
@@ -26,9 +36,11 @@ MongoClient.connect(MONGO_URL, function(err, db){
             if (err) throw error;
             res.send(doc);
             messages = doc;       
-            for (var key in messages) {
-                rooms[key];
+            for (var i = 0; i < messages.length; i++) {
+                    rooms[i] = messages[i].room_id;
             }
+			rooms = unique(rooms);
+			console.log('//',rooms)
         });
     });
 
@@ -48,12 +60,11 @@ MongoClient.connect(MONGO_URL, function(err, db){
 					if (err) throw error;
 					res.send(doc);
 					messages = doc;       
-					for (var key in messages) {
-						rooms[key];
+					for (var i = 0; i < messages.length; i++) {
+							rooms[i] = messages[i].room_id;
 					}
-					console.log('rooms');
-					console.log(rooms);
-					console.log('rooms');
+					rooms = unique(rooms);
+					console.log('//',rooms)
 					io.emit('fetch rooms', rooms);
 				});
 			})
@@ -72,12 +83,13 @@ MongoClient.connect(MONGO_URL, function(err, db){
 			});
 			
 			var messend=[];
-			
+		    var j=0;
 			for (var i = 0; i < messages.length; i++) {
 				if (messages[i].room_id == room_id){
-					messend[i] = messages[i].log;
+					messend[j] = messages[i].log;
+					j++;
 				}
-			}			
+			}		
 			io.to(socket.id).emit('chat message init', messend);//messages[room_id]
 		});
 
