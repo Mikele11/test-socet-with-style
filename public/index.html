@@ -54,7 +54,7 @@
     </div>
 
     <script>
-        var url = "https://socetchat.herokuapp.com";
+        var url = "localhost:3000";
         var socket = io.connect(url);
         var user_name = "";
         var current_room = "";
@@ -67,11 +67,9 @@
 			for (var i = 0; i < arr.length; i++) {
 				var str = arr[i];
 				obj[str] = true; 
-			}
-			
+			}			
 			return Object.keys(obj); 
 		};
-
 		
         $.ajax({
             url: "/reactlist",
@@ -83,13 +81,12 @@
 						rooms[i] = response[i].room_id;
 				}
 				rooms = unique(rooms);
-				console.log('//',rooms)
+				console.log('rooms=>',rooms)
 				
                 $('#room-list').empty();
                 rooms.forEach((v) => {
                     $('#room-list').append('<a href="#" class="list-group-item room-menu" data-room-id="' + v + '">' + v + '</a>');
-                }) 
-                 
+                })                  
             }
 		});
 
@@ -121,33 +118,47 @@
             $('#input-message').val("");
             return false;
 		})
-//зміна кімнати
+		
+		//зміна кімнати
+		
         $(document).on('click', '.room-menu', (ev) => {
             current_room = $(ev.currentTarget).attr('data-room-id');
             socket.emit('join', {
                 room_id: current_room,
                 user_name: user_name
             });
+			
+			$.ajax({
+				url: "/reactlist",
+				type: "GET",
+				data: '',
+				cache: false,
+				success: function(response){
+					for (var i = 0; i < response.length; i++) {
+							rooms[i] = response[i].room_id;
+					}
+					rooms = unique(rooms);					
+					$('#room-list').empty();
+					rooms.forEach((v) => {
+						$('#room-list').append('<a href="#" class="list-group-item room-menu" data-room-id="' + v + '">' + v + '</a>');
+					}) 
+					 
+				}
+			});
+									
             socket.emit('fetch message', current_room);
             $('#current_room_id').text(current_room);
             return false;
         });
-//зміна кімнати
+
         socket.on('fetch rooms', (rooms) => {
             $('#room-list').empty();
             rooms.forEach((v) => {
                 $('#room-list').append('<a href="#" class="list-group-item room-menu" data-room-id="' + v + '">' + v + '</a>');
             })
         });
+		
         socket.on('chat message', (data_doc) => {
-            console.log(data_doc);
-			/*
-			var log = {
-				user_name: $('#input-user-name').val(),
-				message: $('#input-message').val()
-			};
-			messages[$('#input-room-id').val()].push(log);
-			*/
 			
 			/*
 			$.ajax({
@@ -173,7 +184,6 @@
 				url: '/reactlist',						
 				success: function(data) {
 					console.log('success');
-					console.log(JSON.stringify(data));
 				},
 				error: function( jqXhr, textStatus, errorThrown ){
 					console.log(  jqXhr )
