@@ -9,6 +9,7 @@ app.use(bodyParser.json());
 
 var rooms = [];
 var messages = {};
+var messages1 = {};
 var mongojs = require('mongojs');
 const MongoClient = require('mongodb').MongoClient;
 const MONGO_URL = 'mongodb://Mikele11:face112358@ds119688.mlab.com:19688/reactlist';
@@ -40,7 +41,7 @@ MongoClient.connect(MONGO_URL, function(err, db){
                     rooms[i] = messages[i].room_id;
             }
 			rooms = unique(rooms);
-			console.log('//',rooms)
+			console.log('rooms==>',rooms)
         });
     });
 
@@ -64,24 +65,12 @@ MongoClient.connect(MONGO_URL, function(err, db){
 							rooms[i] = messages[i].room_id;
 					}
 					rooms = unique(rooms);
-					console.log('//',rooms)
 					io.emit('fetch rooms', rooms);
 				});
 			})
 		});
 
-		socket.on('fetch message', (room_id) => {
-
-			app.get('/reactlist', function (req, res) {
-				db.collection("reactlist").find({rooms:room_id}).toArray(function(error, doc) {
-					if (err) throw error;
-					console.log('.+error',error);
-					console.log('.doc',doc);
-					res.send(doc);
-					//db.close();
-				});
-			});
-			
+		socket.on('fetch message', (room_id) => {			
 			var messend=[];
 		    var j=0;
 			for (var i = 0; i < messages.length; i++) {
@@ -89,7 +78,12 @@ MongoClient.connect(MONGO_URL, function(err, db){
 					messend[j] = messages[i].log;
 					j++;
 				}
-			}		
+			}
+/*
+			console.log('*********');
+					console.log('.messend',messend);
+			console.log('*********');
+*/			
 			io.to(socket.id).emit('chat message init', messend);//messages[room_id]
 		});
 
@@ -104,15 +98,13 @@ MongoClient.connect(MONGO_URL, function(err, db){
 				room_id: data.room_id,
 				log: log
 			});
-			console.log('post app');
+
 			app.post('/reactlist', function (req, res) {
 				db.collection("reactlist").insertOne(req.body, function(err, doc) {
 				  if (err){
 					console.log('.post/error',error);					
 				  } 
 				  res.json(doc);
-				  console.log('post..doc',doc);
-				  //db.close();
 				});
 			  });
 
@@ -121,7 +113,6 @@ MongoClient.connect(MONGO_URL, function(err, db){
 	});//socet
 
 }); 
-
 
 
 console.log('server on port 3000');
