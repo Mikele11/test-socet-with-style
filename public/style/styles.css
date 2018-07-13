@@ -18,8 +18,9 @@ html, body {
 .form-control{
 	width: 90% !important;
 }
-/*
-#title2>div:nth-of-type(3){
-	margin-left: 4%;
+.idhiden{
+	display:none;
 }
-*/
+i{
+	color: #fb5858;
+}
