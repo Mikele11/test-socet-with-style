@@ -44,6 +44,19 @@ MongoClient.connect(MONGO_URL, function(err, db){
 			console.log('rooms==>',rooms)
         });
     });
+	
+//------початок видалення
+	app.delete('/reactlist', function (req, res) {
+		console.log('>>>>',req.body);
+		var id = req.body.id;
+		db.collection("reactlist").remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
+			res.json(doc);
+		});
+    });
+//-----кінець видалення	
+	
+	
+	
 
    io.on('connection', (socket) => {
 		//io.emit('fetch rooms', rooms);
@@ -62,7 +75,7 @@ MongoClient.connect(MONGO_URL, function(err, db){
 					res.send(doc);
 					messages = doc;       
 					for (var i = 0; i < messages.length; i++) {
-							rooms[i] = messages[i].room_id;
+						rooms[i] = messages[i].room_id;
 					}
 					rooms = unique(rooms);
 					io.emit('fetch rooms', rooms);
@@ -75,15 +88,16 @@ MongoClient.connect(MONGO_URL, function(err, db){
 		    var j=0;
 			for (var i = 0; i < messages.length; i++) {
 				if (messages[i].room_id == room_id){
-					messend[j] = messages[i].log;
+					//messend[j] = messages[i].log;
+					messend[j] = messages[i];
 					j++;
 				}
 			}
-/*
+
 			console.log('*********');
 					console.log('.messend',messend);
 			console.log('*********');
-*/			
+			
 			io.to(socket.id).emit('chat message init', messend);//messages[room_id]
 		});
 
