@@ -24,3 +24,10 @@ html, body {
 i{
 	color: #fb5858;
 }
+p{
+	width: 80%;
+    border: 1px solid;
+    border-radius: 14px;
+    padding: 10px;
+    background: #d3d3eb;
+}
