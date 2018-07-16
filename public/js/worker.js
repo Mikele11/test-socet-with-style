@@ -10,7 +10,7 @@ jQuery(document).ready(function($) {
 		if (navigator.onLine == true){
 			console.log('on')
 			//$('#user-list').css("background","greenyellow");
-			$('.userp').each(function( index ) {
+			$('#user-list>p').each(function( index ) {
 			  console.log( index + ": " + $( this ).text() );
 			  if ($( this ).text() == $('#response').text()){
 				$( this ).css("background","greenyellow");  
@@ -19,7 +19,7 @@ jQuery(document).ready(function($) {
 			
 		} else {
 			console.log('off')
-			$('.userp').css("background","#d3d3eb");
+			$('p').css("background","#d3d3eb");
 		}
 	},2000);
 })
