@@ -5,28 +5,6 @@ var current_room = "";
 
 var rooms=[];
 
-jQuery(document).ready(function($) {
-	setTimeout(function(){
-		if (navigator.onLine == true){
-			console.log('on')
-			//$('#user-list').css("background","greenyellow");
-			 console.log( 'each1',$('#user-list>p') );
-			console.log( 'each2',$('.userp') );
-			$('#user-list>p').each(function( index ) {
-			  console.log( 'each' );	
-			  console.log( index + ": " + $( this ).text() );
-			  if ($( this ).text() == $('#response').text()){
-				$( this ).css("background","greenyellow");  
-			  } 
-			});
-			
-		} else {
-			console.log('off')
-			$('p').css("background","#d3d3eb");
-		}
-	},2000);
-})
-
 function unique(arr) {
 	var obj = {};
 	for (var i = 0; i < arr.length; i++) {
@@ -212,4 +190,25 @@ socket.on('chat message init', (messages) => {
 	});
 });
 
+jQuery(document).ready(function($) {
+	setTimeout(function(){
+		if (navigator.onLine == true){
+			console.log('on')
+			//$('#user-list').css("background","greenyellow");
+			 console.log( 'each1',$('#user-list>p') );
+			console.log( 'each2',$('.userp') );
+			$('#user-list>p').each(function( index ) {
+			  console.log( 'each' );	
+			  console.log( index + ": " + $( this ).text() );
+			  if ($( this ).text() == $('#response').text()){
+				$( this ).css("background","greenyellow");  
+			  } 
+			});
+			
+		} else {
+			console.log('off')
+			$('p').css("background","#d3d3eb");
+		}
+	},2000);
+})
 
