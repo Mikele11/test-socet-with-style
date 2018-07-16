@@ -143,6 +143,17 @@ MongoClient.connect(MONGO_URL2, function(err, db){
         });
     });
 	
+	app.get('/userlistsocetsearch', function (req, res) {
+		console.log('574656566756')
+		  var fname1 = req.query.fname;
+		console.log('fname1>>>',req.query.fname)
+        db.collection("userlistsocet").find({user_name: fname1}).toArray(function(error, doc) {
+            if (err) throw error;
+			console.log('doc',doc);
+            res.send(doc);
+        });
+    });
+	
 //------початок видалення
 	app.post('/userlistsocet', function (req, res) {
 
