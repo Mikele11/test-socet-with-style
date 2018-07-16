@@ -26,6 +26,7 @@
 				<input type="hidden" id="picrscr" value="">
 				<div id="response"></div>
 				<script>
+
 					
 					function getUserData() {
 						FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,picture.width(100).height(100)'},function(response) {
@@ -39,20 +40,39 @@
 								user_avatar: response.picture.data.url,
 								user_name: response.name,
 							};
+							var fname = response.name;
 							$.ajax({
-								type: 'POST',
-								data: JSON.stringify(loguser),
-								contentType: 'application/json',
-								url: '/userlistsocet',						
-								success: function(data) {
-									console.log('success');
+								url: "/userlistsocetsearch",
+								type: "GET",
+								data: {"fname":fname},
+								cache: false,
+								success: function(response){
+								console.log('successresponse',response);
+									if (response.length<1){
+										$.ajax({
+											type: 'POST',
+											data: JSON.stringify(loguser),
+											contentType: 'application/json',
+											url: '/userlistsocet',						
+											success: function(data) {
+												console.log('success');
+											},
+											error: function( jqXhr, textStatus, errorThrown ){
+												console.log(  jqXhr )
+												console.log(  textStatus )
+												console.log(  errorThrown )
+											}	
+										});
+									}
+									
 								},
 								error: function( jqXhr, textStatus, errorThrown ){
 									console.log(  jqXhr )
 									console.log(  textStatus )
 									console.log(  errorThrown )
-								}	
+								}
 							});
+						
 							//---------------------get
 							$.ajax({
 								url: "/userlistsocet",
@@ -65,8 +85,7 @@
 								
 									for (var i = 0; i < response.length; i++) {
 										users[i] = response[i];
-									}
-									console.log('33333331',users)									
+									}									
 									$('#user-list').empty();
 									users.forEach((v) => {
 										$('#user-list').append('<p class="userp">' +'<img class="useravatar_small" src="'+ v.user_avatar+'">'+ v.user_name +'</p>');
@@ -86,7 +105,7 @@
 					window.fbAsyncInit = function() {
 						//SDK loaded, initialize it
 						FB.init({
-							appId      : '290383781535876',
+							appId      : '290383781535876 ',//290383781535876  184316765568102
 							xfbml      : true,
 							version    : 'v2.2'
 						});
