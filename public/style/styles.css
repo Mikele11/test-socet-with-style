@@ -8,12 +8,19 @@ html, body {
 	background: #b2ccd4 !important;
 	height: 100vh;
 }
+.centerside{
+	height: 100vh;
+	overflow-x: hidden;
+	width: 50% !important;
+	padding-left: 5%;
+	background: #ebebeb;
+}
 .rightside{
 	height: 100vh;
 	overflow-x: hidden;
-	width: 75% !important;
+	width: 25% !important;
 	padding-left: 5%;
-	background: #ebebeb;
+	background: #cacaf1;
 }
 .form-control{
 	width: 90% !important;
@@ -30,4 +37,22 @@ p{
     border-radius: 14px;
     padding: 10px;
     background: #d3d3eb;
+}
+.useravatar{
+	margin-right: 10px;
+    width: 50px; 
+    height: 50px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -khtml-border-radius: 50%;
+}
+.useravatar_small{
+	margin-right: 5px;
+    width: 22px; 
+    height: 22px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -khtml-border-radius: 50%;
 }
