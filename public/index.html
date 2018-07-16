@@ -44,7 +44,6 @@
 								data: {"fname":fname},
 								cache: false,
 								success: function(response){
-								console.log('successresponse',response);
 									if (response.length<1){
 										$.ajax({
 											type: 'POST',
@@ -114,7 +113,6 @@
 							//user is authorized
 							document.getElementById('response').innerHTML = 'Hello '+ 'in faceboock';
 							getUserData();
-							console.log('>>>>',response);
 						} else {
 
 						}
