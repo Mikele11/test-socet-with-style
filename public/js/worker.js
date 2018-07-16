@@ -196,9 +196,9 @@ $(window).load(function() {
 			console.log('on')
 			//$('#user-list').css("background","greenyellow");
 			 console.log( 'each1',$('#user-list>p') );
-			console.log( 'each2',$('.userp') );
+			console.log( 'each2',$('#user-list')[0].children);
 			console.log( 'each3',$('#user-list') );
-			$('#user-list>p').each(function( index ) {
+			$('#user-list')[0].children.each(function( index ) {
 			  console.log( 'each' );	
 			  console.log( index + ": " + $( this ).text() );
 			  if ($( this ).text() == $('#response').text()){
