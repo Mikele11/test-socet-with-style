@@ -195,11 +195,12 @@ $(window).load(function() {
 		if (navigator.onLine == true){
 			console.log('on')
 			//$('#user-list').css("background","greenyellow");
-			 console.log( 'each1',$('#user-list>p') );
+			 console.log( 'each1',$('#user-list')[0].children.length );
 			console.log( 'each2',$('#user-list')[0].children);
 			console.log( 'each3',$('#user-list') );
 			
 			for (var i = 0; i < $('#user-list')[0].children.length; i++) {
+			console.log( 'each4',$('#user-list')[0].children[i].innerText );	
 			  if ($('#user-list')[0].children[i].innerText == $('#response').text()){
 				$('#user-list')[0].children[i].css("background","greenyellow");  
 			   } 
