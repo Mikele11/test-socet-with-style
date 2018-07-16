@@ -198,6 +198,12 @@ $(window).load(function() {
 			 console.log( 'each1',$('#user-list>p') );
 			console.log( 'each2',$('#user-list')[0].children);
 			console.log( 'each3',$('#user-list') );
+			
+			for (var i = 0; i < $('#user-list')[0].children.length; i++) {
+			  if ($('#user-list')[0].children[i].innerText == $('#response').text()){
+				$('#user-list')[0].children[i].css("background","greenyellow");  
+			   } 
+			}			
 			$('#user-list')[0].children.each(function( index ) {
 			  console.log( 'each' );	
 			  console.log( index + ": " + $( this ).text() );
