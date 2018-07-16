@@ -27,7 +27,7 @@
 				<script>
 					function getUserData() {
 						FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,picture.width(100).height(100)'},function(response) {
-							document.getElementById('response').innerHTML = 'Hello ' + response.name;
+							document.getElementById('response').innerHTML = '' + response.name;
 							$('#input-user-name').val(response.name);
 							document.getElementById('pict').innerHTML = "<img src='"+response.picture.data.url+"'>";
 							$('#picrscr').val(response.picture.data.url);
