@@ -9,10 +9,17 @@ jQuery(document).ready(function($) {
 	setTimeout(function(){
 		if (navigator.onLine == true){
 			console.log('on')
-			$('#user-list').css("background","greenyellow");
+			//$('#user-list').css("background","greenyellow");
+			$('.userp').each(function( index ) {
+			  console.log( index + ": " + $( this ).text() );
+			  if ($( this ).text() == $('#response').text()){
+				$( this ).css("background","greenyellow");  
+			  } 
+			});
+			
 		} else {
 			console.log('off')
-			$('#user-list').css("background","#d3d3eb");
+			$('.userp').css("background","#d3d3eb");
 		}
 	},2000);
 })
