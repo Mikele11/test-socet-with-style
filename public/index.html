@@ -3,12 +3,13 @@
 
 <head>
     <meta charset=utf-8>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.12/angular.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" crossorigin="anonymous"></script>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 	<link href="style/styles.css" rel="stylesheet">
 </head>
@@ -18,6 +19,118 @@
         <div class="row">
             <div class="col-md-3 leftside">
                 <h3>Your name is <span id="current_user_name"></span></h3>
+				
+				<button id="logoutBtn"><i class="fa fa-facebook"></i>Facebook Logout</button>
+				<button id="loginBtn"><i class="fa fa-facebook"></i>Facebook Login</button>
+				<div id='pict'></div>
+				<input type="hidden" id="picrscr" value="">
+				<div id="response"></div>
+				<script>
+					function getUserData() {
+						FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,picture.width(100).height(100)'},function(response) {
+							document.getElementById('response').innerHTML = 'Hello ' + response.name;
+							$('#input-user-name').val(response.name);
+							document.getElementById('pict').innerHTML = "<img src='"+response.picture.data.url+"'>";
+							$('#picrscr').val(response.picture.data.url);
+							
+							//-----------------------post
+							var loguser = {
+								user_avatar: data.user_avatar,
+								user_name: data.user_name,
+							};
+							$.ajax({
+								type: 'POST',
+								data: JSON.stringify(loguser),
+								contentType: 'application/json',
+								url: '/userlistsocet',						
+								success: function(data) {
+									console.log('success');
+								},
+								error: function( jqXhr, textStatus, errorThrown ){
+									console.log(  jqXhr )
+									console.log(  textStatus )
+									console.log(  errorThrown )
+								}	
+							});
+							//---------------------get
+							$.ajax({
+								url: "/userlistsocet",
+								type: "GET",
+								data: '',
+								cache: false,
+								success: function(response){
+								var users=[];
+									for (var i = 0; i < response.length; i++) {
+										users[i] = response[i];
+									}
+									users = unique(users);					
+									$('#user-list').empty();
+									users.forEach((v) => {
+										$('#user-list').appendTo('<p class="userp">' +'<img class="useravatar_small" src="'+ v.user_avatar+'">'+ v.user_name +'</p>');
+									}) 			 
+								}
+							});
+							
+							//$('#user-list').append('<p class="userp">' +'<img class="useravatar_small" src="'+ response.picture.data.url+'">'+ response.name +'</p>');
+						});
+					}
+
+					window.fbAsyncInit = function() {
+						//SDK loaded, initialize it
+						FB.init({
+							appId      : '184316765568102',
+							xfbml      : true,
+							version    : 'v2.2'
+						});
+
+						//check user session and refresh it
+						FB.getLoginStatus(function(response) {
+							if (response.status === 'connected') {
+								//user is authorized
+								document.getElementById('response').innerHTML = 'Hello '+ 'in faceboock';
+								getUserData();
+							} else {
+							
+							}
+						});
+					};
+
+					//load the JavaScript SDK
+					(function(d, s, id){
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (d.getElementById(id)) {return;}
+						js = d.createElement(s); js.id = id;
+						js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5";
+						fjs.parentNode.insertBefore(js, fjs);
+					}(document, 'script', 'facebook-jssdk'));
+
+					//add event listener to login button
+					document.getElementById('loginBtn').addEventListener('click', function() {
+						//do the login
+						FB.login(function(response) {
+
+							if (response.authResponse) {
+								//user just authorized your app
+								document.getElementById('response').innerHTML = 'Hello '+ 'in faceboock';
+								console.log('>>>>>>',response);
+								getUserData();
+								$('#input-user-name').attr("disabled", true);								
+							}
+						}, {scope: 'email,public_profile', return_scopes: true});
+					}, false);
+					document.getElementById('logoutBtn').addEventListener('click', function() {
+						//do the login
+						FB.logout(function(response) {
+							document.getElementById('response').innerHTML =  'bye bye';
+							$('#input-user-name').val('');
+							$('#input-user-name').attr("disabled", false);
+							$('#pict').empty();
+							$('#picrscr').val('');
+						});
+					});
+				</script>
+				
+							
                 <form action="" method="post" id="create-user" class="form-inline">
                     <div class="form-group">
                         <input type="text" name="user-name" class="form-control" id="input-user-name" placeholder="name">
@@ -35,7 +148,7 @@
                 <h4>Room lists</h4>
                 <div id="room-list" class="list-group"></div>
             </div>
-            <div class="col-md-4 rightside">
+            <div class="col-md-4 centerside">
                 <h3>Chat: This room is: <span id="current_room_id"></span></h3>
                 <div class="row">
                     <form action="" method="post" id="post-message" class="form-horizontal">
@@ -52,9 +165,13 @@
                 </div>
 
             </div>
+			<div class="rightside">
+				<h4>User lists</h4>
+				<div id="user-list" class="list-group" ng-repeat="contact in filteredTodos"></div>
+			</div>
         </div>
     </div>
-
+<!--<script src="controllers/controller.js"></script>-->
 <script src="js/worker.js"></script>
 </body>
 
