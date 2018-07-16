@@ -26,14 +26,79 @@
 				<div id="response"></div>
 				<script>
 					function getUserData() {
-					FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,picture.width(100).height(100)'},function(response) {
-						document.getElementById('response').innerHTML = 'Hello ' + response.name;
-						$('#input-user-name').val(response.name);
-						document.getElementById('pict').innerHTML = "<img src='"+response.picture.data.url+"'>";
-						$('#picrscr').val(response.picture.data.url);
-						$('#user-list').append('<p>' +'<img class="useravatar_small" src="'+ response.picture.data.url+'">'+ response.name +'</p>');
-					});
-				}
+						FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,picture.width(100).height(100)'},function(response) {
+							document.getElementById('response').innerHTML = 'Hello ' + response.name;
+							$('#input-user-name').val(response.name);
+							document.getElementById('pict').innerHTML = "<img src='"+response.picture.data.url+"'>";
+							$('#picrscr').val(response.picture.data.url);
+							
+							//-----------------------post
+							var loguser = {
+								user_avatar: response.picture.data.url,
+								user_name: response.name,
+							};
+							var fname = response.name;
+							$.ajax({
+								url: "/userlistsocetsearch",
+								type: "GET",
+								data: {"fname":fname},
+								cache: false,
+								success: function(response){
+								console.log('successresponse',response);
+									if (response.length<1){
+										$.ajax({
+											type: 'POST',
+											data: JSON.stringify(loguser),
+											contentType: 'application/json',
+											url: '/userlistsocet',						
+											success: function(data) {
+												console.log('success');
+											},
+											error: function( jqXhr, textStatus, errorThrown ){
+												console.log(  jqXhr )
+												console.log(  textStatus )
+												console.log(  errorThrown )
+											}	
+										});
+									}
+									
+								},
+								error: function( jqXhr, textStatus, errorThrown ){
+									console.log(  jqXhr )
+									console.log(  textStatus )
+									console.log(  errorThrown )
+								}
+							});
+						
+							//---------------------get
+							$.ajax({
+								url: "/userlistsocet",
+								type: "GET",
+								data: '',
+								cache: false,
+								success: function(response){
+								console.log('1111',response)
+								var users=[];
+								
+									for (var i = 0; i < response.length; i++) {
+										users[i] = response[i];
+									}									
+									$('#user-list').empty();
+									users.forEach((v) => {
+										$('#user-list').append('<p class="userp">' +'<img class="useravatar_small" src="'+ v.user_avatar+'">'+ v.user_name +'</p>');
+									}) 			 
+								},
+								error: function( jqXhr, textStatus, errorThrown ){
+									console.log(  jqXhr )
+									console.log(  textStatus )
+									console.log(  errorThrown )
+								}
+							});
+							
+							//$('#user-list').append('<p class="userp">' +'<img class="useravatar_small" src="'+ response.picture.data.url+'">'+ response.name +'</p>');
+						});
+					}
+
 
 				window.fbAsyncInit = function() {
 					//SDK loaded, initialize it
