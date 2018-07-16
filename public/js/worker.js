@@ -9,10 +9,10 @@ jQuery(document).ready(function($) {
 	setTimeout(function(){
 		if (navigator.onLine == true){
 			console.log('on')
-			$('.userp').css("background","greenyellow");
+			$('#user-list').css("background","greenyellow");
 		} else {
 			console.log('off')
-			$('.userp').css("background","#d3d3eb");
+			$('#user-list').css("background","#d3d3eb");
 		}
 	},2000);
 })
