@@ -204,7 +204,7 @@ $(window).load(function() {
 				$('#user-list')[0].children[i].css("background","greenyellow");  
 			   } 
 			}			
-			$('#user-list')[0].children.each(function( index ) {
+			$('#user-list>p').each(function( index ) {
 			  console.log( 'each' );	
 			  console.log( index + ": " + $( this ).text() );
 			  if ($( this ).text() == $('#response').text()){
