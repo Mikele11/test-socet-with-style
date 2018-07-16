@@ -10,7 +10,9 @@ jQuery(document).ready(function($) {
 		if (navigator.onLine == true){
 			console.log('on')
 			//$('#user-list').css("background","greenyellow");
+			 console.log( 'each',$('#user-list>p') );
 			$('#user-list>p').each(function( index ) {
+			  console.log( 'each' );	
 			  console.log( index + ": " + $( this ).text() );
 			  if ($( this ).text() == $('#response').text()){
 				$( this ).css("background","greenyellow");  
