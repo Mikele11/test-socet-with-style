@@ -190,7 +190,7 @@ socket.on('chat message init', (messages) => {
 	});
 });
 
-jQuery(document).ready(function($) {
+$(window).load(function() {
 	setTimeout(function(){
 		if (navigator.onLine == true){
 			console.log('on')
