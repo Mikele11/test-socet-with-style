@@ -35,8 +35,8 @@
 							
 							//-----------------------post
 							var loguser = {
-								user_avatar: data.user_avatar,
-								user_name: data.user_name,
+								user_avatar: response.picture.data.url,
+								user_name: response.name,
 							};
 							$.ajax({
 								type: 'POST',
