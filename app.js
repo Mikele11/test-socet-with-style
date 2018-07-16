@@ -13,7 +13,7 @@ var messages1 = {};
 var mongojs = require('mongojs');
 const MongoClient = require('mongodb').MongoClient;
 const MONGO_URL = 'mongodb://Mikele11:face112358@ds119688.mlab.com:19688/reactlist';
-
+const MONGO_URL2 = 'mongodb://Mikele11:face112358@ds137631.mlab.com:37631/userlistsocet';
 app.get('/', function(req, res,next) {  
     res.sendFile(__dirname + '/index.html');
 });
@@ -104,6 +104,7 @@ MongoClient.connect(MONGO_URL, function(err, db){
 		socket.on('chat message', (data) => {
 			messages[data.room_id] = messages[data.room_id] || [];
 			var log = {
+				user_avatar: data.user_avatar,
 				user_name: data.user_name,
 				message: data.message
 			};
@@ -129,5 +130,34 @@ MongoClient.connect(MONGO_URL, function(err, db){
 }); 
 
 
+
+
+MongoClient.connect(MONGO_URL2, function(err, db){  
+  if (err) {
+    return console.log(err);
+  }
+   app.get('/userlistsocet', function (req, res) {
+        db.collection("userlistsocet").find({}).toArray(function(error, doc) {
+            if (err) throw error;
+            res.send(doc);
+        });
+    });
+	
+//------початок видалення
+	app.post('/userlistsocet', function (req, res) {
+
+		db.collection("userlistsocet").insertOne(req.body, function(err, doc) {
+			if (err){
+				console.log('.post/error',error);					
+			} 
+			res.json(doc);
+		});
+    });
+//-----кінець видалення	
+	
+	
+	
+
+});
 console.log('server on port 3000');
 server.listen(port);  
