@@ -26,6 +26,16 @@
 				<input type="hidden" id="picrscr" value="">
 				<div id="response"></div>
 				<script>
+				
+					function unique(arr) {
+						var obj = {};
+						for (var i = 0; i < arr.length; i++) {
+							var str = arr[i];
+							obj[str] = true; 
+						}			
+						return Object.keys(obj); 
+					};
+					
 					function getUserData() {
 						FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,picture.width(100).height(100)'},function(response) {
 							document.getElementById('response').innerHTML = 'Hello ' + response.name;
@@ -59,14 +69,16 @@
 								data: '',
 								cache: false,
 								success: function(response){
+								console.log('1111',response)
 								var users=[];
+								
 									for (var i = 0; i < response.length; i++) {
 										users[i] = response[i];
 									}
-									users = unique(users);					
+									console.log('33333331',users)									
 									$('#user-list').empty();
 									users.forEach((v) => {
-										$('#user-list').appendTo('<p class="userp">' +'<img class="useravatar_small" src="'+ v.user_avatar+'">'+ v.user_name +'</p>');
+										$('#user-list').append('<p class="userp">' +'<img class="useravatar_small" src="'+ v.user_avatar+'">'+ v.user_name +'</p>');
 									}) 			 
 								},
 								error: function( jqXhr, textStatus, errorThrown ){
@@ -172,7 +184,7 @@
             </div>
 			<div class="rightside">
 				<h4>User lists</h4>
-				<div id="user-list" class="list-group" ng-repeat="contact in filteredTodos"></div>
+				<div id="user-list" class="list-group"></div>
 			</div>
         </div>
     </div>
