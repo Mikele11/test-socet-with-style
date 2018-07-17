@@ -52,10 +52,10 @@ $('#create-room').on('submit', () => {
 
 var avatar;
 if ($('#picrscr').val()==''){
-	console.log('scr pict22',$('#picrscr').val());
+	console.log('scr pict empty',$('#picrscr').val());
 	avatar='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXPg-87YPJhgdeqQoAlUdgF60k6yi61LlpDtSXSqjWMVa9xbWVXQ';
 }else{
-	console.log('scr pict');
+	console.log('scr pict ');
 	avatar=$('#picrscr').val();
 }
 
@@ -216,8 +216,21 @@ $(window).load(function() {
 			});
 			
 		} else {
+
 			console.log('off')
-			$('p').css("background","#d3d3eb");
+			for (var i = 0; i < $('#user-list')[0].children.length; i++) {
+			console.log( 'each4',$('#user-list')[0].children[i].innerText );	
+			  if ($('#user-list')[0].children[i].innerText == $('#response').text()){
+				$('#user-list')[0].children[i].css("background","#d3d3eb");  
+			   } 
+			}			
+			$('#user-list>p').each(function( index ) {
+			  console.log( 'each' );	
+			  console.log( index + ": " + $( this ).text() );
+			  if ($( this ).text() == $('#response').text()){
+				$( this ).css("background","#d3d3eb");  
+			  } 
+			});
 		}
 	},2000);
 })
