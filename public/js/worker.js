@@ -49,15 +49,16 @@ $('#create-room').on('submit', () => {
 	$('#input-room-id').val("");
 	return false;
 });
-
-var avatar;
-if ($('#picrscr').val()==''){
-	console.log('scr pict empty',$('#picrscr').val());
-	avatar='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXPg-87YPJhgdeqQoAlUdgF60k6yi61LlpDtSXSqjWMVa9xbWVXQ';
-}else{
-	console.log('scr pict ');
-	avatar=$('#picrscr').val();
-}
+$(window).load(function() {
+	var avatar;
+	if ($('#picrscr').val()==''){
+		console.log('scr pict empty',$('#picrscr').val());
+		avatar='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXPg-87YPJhgdeqQoAlUdgF60k6yi61LlpDtSXSqjWMVa9xbWVXQ';
+	} else {
+		console.log('scr pict ');
+		avatar=$('#picrscr').val();
+	}
+});
 
 $('#post-message').on('submit', () => {
 	socket.emit('chat message', {
