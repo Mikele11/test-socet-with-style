@@ -206,11 +206,12 @@ $(window).load(function() {
 			   } 
 			}
 			console.log( 'each p', $('#user-list>p'));
-			$('#user-list>p').each(function( index ) {
-			  console.log( 'each' );	
-			  console.log( index + ": " + $( this ).text() );
-			  if ($( this ).text() == $('#response').text()){
-				$( this ).css("background","greenyellow");  
+			var usersOfList = $('#user-list>p');
+			console.log( 'usersOfList', usersOfList);
+			usersOfList.each(function( index ) {
+			  console.log( 'in cicle' );	
+			  if (usersOfList[index].text() == $('#response').text()){
+				usersOfList[index].css("background","greenyellow");  
 			  } 
 			});
 			
