@@ -54,6 +54,7 @@ var avatar;
 if ($('#picrscr').val()==''){
 	avatar='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXPg-87YPJhgdeqQoAlUdgF60k6yi61LlpDtSXSqjWMVa9xbWVXQ';
 }else{
+	console.log('scr pict');
 	avatar=$('#picrscr').val();
 }
 
