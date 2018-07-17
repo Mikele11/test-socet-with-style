@@ -210,6 +210,7 @@ $(window).load(function() {
 			var userOfList = $('#user-list');
 			console.log( 'usersOfList', usersOfList);
 			console.log( 'userOfList>>', userOfList);
+			console.log( 'userOfList>>>>>', userOfList[0].children);
 			usersOfList.each(function( index ) {
 			  console.log( 'in cicle' );	
 			  if (usersOfList[index].text() == $('#response').text()){
