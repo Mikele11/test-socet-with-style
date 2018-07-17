@@ -204,7 +204,8 @@ $(window).load(function() {
 			  if ($('#user-list')[0].children[i].innerText == $('#response').text()){
 				$('#user-list')[0].children[i].css("background","greenyellow");  
 			   } 
-			}			
+			}
+			console.log( 'each p', $('#user-list>p'));
 			$('#user-list>p').each(function( index ) {
 			  console.log( 'each' );	
 			  console.log( index + ": " + $( this ).text() );
@@ -222,7 +223,6 @@ $(window).load(function() {
 				$('#user-list')[0].children[i].css("background","#d3d3eb");  
 			   } 
 			}
-			console.log( 'each p', $('#user-list>p'));
 			$('#user-list>p').each(function( index ) {
 			  console.log( 'each' );	
 			  console.log( index + ": " + $( this ).text() );
