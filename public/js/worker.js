@@ -50,27 +50,24 @@ $('#create-room').on('submit', () => {
 	return false;
 });
 
-var avatar;
-if ($('#picrscr').val()==''){
-	console.log('scr pict empty',$('#picrscr').val());
-	avatar='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXPg-87YPJhgdeqQoAlUdgF60k6yi61LlpDtSXSqjWMVa9xbWVXQ';
-} else {
-	console.log('scr pict ');
-	avatar=$('#picrscr').val();
-}
 
 
 $('#post-message').on('submit', () => {
+	var avatar;
+	if ($('#picrscr').val()==''){
+		avatar='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXPg-87YPJhgdeqQoAlUdgF60k6yi61LlpDtSXSqjWMVa9xbWVXQ';
+	}else{
+		avatar=$('#picrscr').val();
+	}
 	socket.emit('chat message', {
 		room_id: current_room,
-		user_avatar: avatar,		
+		user_avatar: avatar,
 		user_name: user_name,
 		message: $('#input-message').val()
 	});
 	$('#input-message').val("");
 	return false;
 })
-
 //зміна кімнати
 
 $(document).on('click', '.room-menu', (ev) => {
