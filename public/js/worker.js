@@ -196,7 +196,7 @@ $(window).load(function() {
 			console.log('on')
 			//$('#user-list').css("background","greenyellow");
 			 console.log( 'each1',$('#user-list')[0].children.length );
-			console.log( 'each2',$('#user-list')[0].children);
+			console.log( 'each2',$('#user-list')[0].children,$('#user-list')[0].children.length ,$('#user-list')[0].children.length,$('#user-list')[0].children[0] );
 			console.log( 'each3',$('#user-list') );
 			
 			for (var i = 0; i < $('#user-list')[0].children.length; i++) {
