@@ -25,14 +25,13 @@
 				<input type="hidden" id="picrscr" value="">
 				<div id="response"></div>
 				<script>
-					function getUserData() {
-						FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,picture.width(100).height(100)'},function(response) {
-							document.getElementById('response').innerHTML = '' + response.name;
-							$('#input-user-name').val(response.name);
-							document.getElementById('pict').innerHTML = "<img src='"+response.picture.data.url+"'>";
-							$('#picrscr').val(response.picture.data.url);
-							
-							//-----------------------post
+				function getUserData() {
+					FB.api('/me', 'GET', {fields: 'first_name,last_name,name,id,picture.width(100).height(100)'},function(response) {
+						document.getElementById('response').innerHTML = 'Hello ' + response.name;
+						$('#input-user-name').val(response.name);
+						document.getElementById('pict').innerHTML = "<img src='"+response.picture.data.url+"'>";
+						$('#picrscr').val(response.picture.data.url);
+													//-----------------------post
 							var loguser = {
 								user_avatar: response.picture.data.url,
 								user_name: response.name,
@@ -93,11 +92,9 @@
 									console.log(  errorThrown )
 								}
 							});
-							
-							//$('#user-list').append('<p class="userp">' +'<img class="useravatar_small" src="'+ response.picture.data.url+'">'+ response.name +'</p>');
-						});
-					}
-
+						//$('#user-list').append('<p>' +'<img class="useravatar_small" src="'+ response.picture.data.url+'">'+ response.name +'</p>');
+					});
+				}
 
 				window.fbAsyncInit = function() {
 					//SDK loaded, initialize it
