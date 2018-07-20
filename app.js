@@ -10,6 +10,9 @@ app.use(bodyParser.json());
 var rooms = [];
 var messages = {};
 var messages1 = {};
+var users=[];
+var usersOnline=[];
+var user_current;
 var mongojs = require('mongojs');
 const MongoClient = require('mongodb').MongoClient;
 const MONGO_URL = 'mongodb://Mikele11:face112358@ds119688.mlab.com:19688/reactlist';
@@ -47,7 +50,6 @@ MongoClient.connect(MONGO_URL, function(err, db){
 	
 //------початок видалення
 	app.delete('/reactlist', function (req, res) {
-		console.log('>>>>',req.body);
 		var id = req.body.id;
 		db.collection("reactlist").remove({_id: mongojs.ObjectId(id)}, function (err, doc) {
 			res.json(doc);
@@ -88,16 +90,11 @@ MongoClient.connect(MONGO_URL, function(err, db){
 		    var j=0;
 			for (var i = 0; i < messages.length; i++) {
 				if (messages[i].room_id == room_id){
-					//messend[j] = messages[i].log;
 					messend[j] = messages[i];
 					j++;
 				}
 			}
-
-			console.log('*********');
-					console.log('.messend',messend);
-			console.log('*********');
-			
+		
 			io.to(socket.id).emit('chat message init', messend);//messages[room_id]
 		});
 
@@ -124,51 +121,135 @@ MongoClient.connect(MONGO_URL, function(err, db){
 			  });
 
 		});
-
+		//----------------------------------отрисовка юзера
+/*
+		socket.on('remember user', (user) => {
+			console.log('user_current');
+			console.log(user);
+			console.log('user_current');
+			
+			
+			socket.user = user;
+			user_current = user;
+			changeColors();
+		});
+	
+		function changeColors() {
+			io.sockets.emit('change',user_current);
+		}
+		function oldColors() {
+			io.sockets.emit('oldcolors',user_current);
+		}		
+		socket.on('disconnect', function (user_current) {
+			oldColors();
+		});
+*/
+		Array.prototype.remove = function(value) {
+			var idx = this.indexOf(value);
+			if (idx != -1) {
+				// Второй параметр - число элементов, которые необходимо удалить
+				return this.splice(idx, 1);
+			}
+			return false;
+		}
+		
+		socket.on('remember user', (user) => {
+			console.log('user_current');
+			console.log(user);
+			console.log('user_current');
+			
+			
+			socket.user = user;
+			usersOnline.push(user);
+			usersOnline = unique(usersOnline);
+			changeColors();
+		});
+	
+		function changeColors() {
+			io.sockets.emit('change',usersOnline);
+		}
+		function oldColors() {
+			io.sockets.emit('oldcolors',usersOnline);
+		}		
+		socket.on('disconnect', function () {
+			//usersOnline.remove[user_current];
+			usersOnline.splice(usersOnline.indexOf(socket.user), 1);
+			oldColors();
+		});	
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+	   
+		//-------------------------кінець отрисовки
+		
+		
 	});//socet
 
 }); 
 
 
-
-
-MongoClient.connect(MONGO_URL2, function(err, db){  
-  if (err) {
-    return console.log(err);
-  }
-   app.get('/userlistsocet', function (req, res) {
-        db.collection("userlistsocet").find({}).toArray(function(error, doc) {
-            if (err) throw error;
-            res.send(doc);
-        });
-    });
 	
-	app.get('/userlistsocetsearch', function (req, res) {
-		console.log('574656566756')
-		  var fname1 = req.query.fname;
-		console.log('fname1>>>',req.query.fname)
-        db.collection("userlistsocet").find({user_name: fname1}).toArray(function(error, doc) {
-            if (err) throw error;
-			console.log('doc',doc);
-            res.send(doc);
-        });
-    });
-	
-//------початок видалення
-	app.post('/userlistsocet', function (req, res) {
-
-		db.collection("userlistsocet").insertOne(req.body, function(err, doc) {
-			if (err){
-				console.log('.post/error',error);					
-			} 
-			res.json(doc);
+	MongoClient.connect(MONGO_URL2, function(err, db){  
+	  if (err) {
+		return console.log(err);
+	  }
+	   app.get('/userlistsocet', function (req, res) {
+			db.collection("userlistsocet").find({}).toArray(function(error, doc) {
+				if (err) throw error;
+				res.send(doc);
+				users = doc;
+			});
 		});
-    });
-//-----кінець видалення	
-	
-	
-	
+		
+		app.get('/userlistsocetsearch', function (req, res) {
+			var fname1 = req.query.fname;
+			db.collection("userlistsocet").find({user_name: fname1}).toArray(function(error, doc) {
+			    if (err) throw error;
+					console.log('doc',doc);
+			    res.send(doc);
+			});
+	    	});
+		
+		app.post('/userlistsocet', function (req, res) {
 
-});
+			db.collection("userlistsocet").insertOne(req.body, function(err, doc) {
+				if (err){
+					console.log('.post/error',error);					
+				} 
+				res.json(doc);
+			});
+		});		
+
+	});
+	
+	app.post('/search', function (req, res) {
+		console.log('search>',req.body.word)
+		console.log(req.body.word)
+		const GoogleScraper = require('google-scraper');
+		console.log('GoogleScraper>',GoogleScraper)
+		if (req.body.word!== undefined){
+			console.log('search>????',req.body.word)
+			const options = {
+			  keyword: req.body.word,//'mikele'
+			  language: "ru",
+			  tld:"ru",
+			  results: 20
+			};
+			 
+			const scrape = new GoogleScraper(options); 
+			scrape.getGoogleLinks.then(function(doc) {
+			  res.send(doc);
+			  //res.json(doc);
+			  console.log('++++');
+			}).catch(function(e) {
+			  console.log(e);
+			})
+		}
+	});
+
 console.log('server on port 3000');
 server.listen(port);  
