@@ -2,6 +2,9 @@ html, body {
   height: 100%;
   width: 100%;
 }
+.container{
+	width: 100%;
+}
 .leftside{
 	overflow: auto;
 	min-height: 100%;
@@ -39,7 +42,7 @@ p{
     background: #d3d3eb;
 }
 .useravatar{
-	margin-right: 10px;
+    margin-right: 10px;
     width: 50px; 
     height: 50px;
     border-radius: 50%;
@@ -55,4 +58,25 @@ p{
     -moz-border-radius: 50%;
     -webkit-border-radius: 50%;
     -khtml-border-radius: 50%;
+}
+/*
+#title2>div:nth-of-type(3){
+	margin-left: 4%;
+}
+*/
+.сollapse{
+	background: #fcfcff;
+	text-align: right;
+}
+.caret-up{
+	border-bottom: 10px solid #000000;
+    border-left: 6px solid rgba(0, 0, 0, 0);
+    border-right: 6px solid rgba(0, 0, 0, 0);
+    content: "";
+    display: inline-block;
+    height: 0;
+    vertical-align: top;
+    width: 0;
+	margin-top: 5px;
+	margin-right: 5px;
 }
