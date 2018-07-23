@@ -192,13 +192,14 @@ $(document).on('click', '.userp', (ev) => {
 		}else{
 			avatar=$('#picrscr').val();
 		}
-
-		socket.emit('chat message', {
-			room_id: current_user,
-			user_avatar: avatar,		
-			user_name: user_name,
-			message: value
-		});
+		if ((value!==null)&&(value>'')){
+			socket.emit('chat message', {
+				room_id: current_user,
+				user_avatar: avatar,		
+				user_name: user_name,
+				message: value
+			});
+		}
 	}
 	if (current_user==$('#response').text()){
 		
