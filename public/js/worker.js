@@ -4,6 +4,8 @@ var user_name = "";
 var current_room = "";
 
 var rooms=[];
+var users=[];
+var clearR=[];
 
 function unique(arr) {
 	var obj = {};
@@ -14,6 +16,32 @@ function unique(arr) {
 	return Object.keys(obj); 
 };
 
+function clearRooms (roo,usr){
+	if (roo.length>=usr.length){
+		var k=0;
+		for (var i = 0; i < roo.length; i++) {
+			
+			if (usr.indexOf(roo[i]) === -1){
+				clearR[k]=roo[i]
+				k++;
+			}
+		}
+	} else return false;
+}
+
+$.ajax({
+	url: "/userlistsocet",
+	type: "GET",
+	data: '',
+	cache: false,
+	success: function(response){
+		for (var i = 0; i < response.length; i++) {
+				users[i] = response[i].user_name;
+		}
+		console.log('users get',users); 
+	}
+});
+
 $.ajax({
 	url: "/reactlist",
 	type: "GET",
@@ -21,11 +49,13 @@ $.ajax({
 	cache: false,
 	success: function(response){
 		for (var i = 0; i < response.length; i++) {
-				rooms[i] = response[i].room_id;
+			rooms[i] = response[i].room_id;
 		}
-		rooms = unique(rooms);		
+		rooms = unique(rooms);
+		clearRooms(rooms,users);
+		console.log('clear room',clearR); 
 		$('#room-list').empty();
-		rooms.forEach((v) => {
+		clearR.forEach((v) => {
 			$('#room-list').append('<a href="#" class="list-group-item room-menu" data-room-id="' + v + '">' + v + '</a>');
 		})                  
 	}
@@ -123,9 +153,10 @@ $(document).on('click', '.room-menu', (ev) => {
 			for (var i = 0; i < response.length; i++) {
 				rooms[i] = response[i].room_id;
 			}
-			rooms = unique(rooms);					
+			rooms = unique(rooms);
+			clearRooms(rooms,users);
 			$('#room-list').empty();
-			rooms.forEach((v) => {
+			clearR.forEach((v) => {
 				$('#room-list').append('<a href="#" class="list-group-item room-menu" data-room-id="' + v + '">' + v + '</a>');
 			}) 			 
 		}
@@ -136,6 +167,62 @@ $(document).on('click', '.room-menu', (ev) => {
 	return false;
 });
 
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+$(document).on('click', '.userp', (ev) => {
+	current_user = $(ev.currentTarget).text();
+
+	
+	
+	socket.emit('create room', {
+		room_id: current_user,
+		user_name: user_name
+	});
+	current_room = current_user;
+	socket.emit('fetch messages', current_user);
+	$('#current_room_id').text(current_user);
+	$('#input-room-id').val("");
+	
+		
+	console.log('click to user',current_user);
+	if (current_user!=$('#response').text()){
+		var value = prompt("Send message to"+current_user+"<br>...:)",'');
+		var avatar;
+		if ($('#picrscr').val()==''){
+			avatar='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRXPg-87YPJhgdeqQoAlUdgF60k6yi61LlpDtSXSqjWMVa9xbWVXQ';
+		}else{
+			avatar=$('#picrscr').val();
+		}
+
+		socket.emit('chat message', {
+			room_id: current_user,
+			user_avatar: avatar,		
+			user_name: user_name,
+			message: value
+		});
+	}
+	if (current_user==$('#response').text()){
+		
+		socket.emit('join', {
+			room_id: current_user,
+			user_name: user_name
+		});
+		
+		$.ajax({
+			url: "/reactlist",
+			type: "GET",
+			data: '',
+			cache: false,
+			success: function(response){
+				console.log('success user');				
+			}
+		});								
+		socket.emit('fetch message', current_user);
+		$('#current_room_id').text(current_user);		
+	}
+	
+	return false;
+});
+//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //--------видалення поч
 
 $(document).on('click', '.fa-trash', (ev) => {
@@ -190,7 +277,8 @@ $(document).on('click', '.fa-trash', (ev) => {
 
 socket.on('fetch rooms', (rooms) => {
 	$('#room-list').empty();
-	rooms.forEach((v) => {
+	clearRooms(rooms,users);
+	clearR.forEach((v) => {
 		$('#room-list').append('<a href="#" class="list-group-item room-menu" data-room-id="' + v + '">' + v + '</a>');
 	})
 });
@@ -287,12 +375,7 @@ socket.on('change', function (usersOnline){
 			var x = document.getElementsByClassName("userp").length;
 			console.log( 'class',x);
 			$('#user-list>p').each(function( index ) {
-				console.log('in each change');
-				console.log('in each change this',$( this ).text());
-				console.log('in each change index',usersOnline[index]);
 			  if (usersOnline.indexOf($( this ).text() ) != -1){
-				  console.log('in each change thr same');
-				  console.log('write color',usersOnline[index]);
 				$( this ).css("background","greenyellow"); 
 			  } 
 			});			
@@ -319,13 +402,6 @@ socket.on('oldcolors', function (usersOnline){
 		});
 	},5000);
 });
-
-
-
-
-
-
-
 
 //-----------------------------------------------
 /*
