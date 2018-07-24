@@ -95,9 +95,14 @@
 					});
 				}
 				function getUserPost() {
-					FB.api('/me', 'GET', {fields: 'posts'},function(response) {
-					 	console.log('posts of facebook',response);					
-					});
+					FB.api(
+					    "/100004683542869/feed",
+					    function (response) {
+					      if (response && !response.error) {
+						console.log('posts of facebook',response);
+					      }
+					    }
+					);
 				};				
 								
 					
