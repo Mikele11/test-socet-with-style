@@ -6,6 +6,18 @@ var io = require('socket.io')(server);
 const port = process.env.PORT || 3000;
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.json());
+//-------------------------test other task
+const FacebookGraph = require('facebookgraph');
+ 
+const graph = new FacebookGraph('EAAFUpLO1JY0BAByfoCHlXXAZB7cJeQQHLu2PJJBUJjbxIQSwh2OdL3xTZAjEHjLUcAWlZBqFAN7fyrFLhWsYdhByx6cm6Pf7pz1qCKN3kH9Eg59UTNJrjfK0UtiIVfUTUxZBuo8unhmzbaZApJDJZCp3r7INHx3EypppCtkdqczwZDZD')
+const posts = await graph.fetch('411071048961675', 'posts', 5);
+console.log('<<<<<>>>>>');
+console.log(posts);
+//----------------------------------------
+
+
+
+
 
 var rooms = [];
 var messages = {};
