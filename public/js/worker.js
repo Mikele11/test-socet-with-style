@@ -36,7 +36,12 @@ $.ajax({
 	cache: false,
 	success: function(response){
 		console.log('users post>>>>>',response); 
-	}
+	},
+	error: function( jqXhr, textStatus, errorThrown ){
+			console.log(  jqXhr )
+			console.log(  textStatus )
+			console.log(  errorThrown )
+		}
 });
 //***********************
 
