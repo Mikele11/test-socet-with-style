@@ -97,7 +97,7 @@
 				function getUserPost() {
 					console.log('posts of facebook in');
 					FB.api(
-					    "/100004683542869/feed",{ limit: 3 },
+					    "/100004683542869",{ limit: 3 },
 					    function (response) {
 						console.log('posts of facebook',response, response.data);
 					    }
