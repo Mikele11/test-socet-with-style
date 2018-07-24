@@ -28,6 +28,17 @@ function clearRooms (roo,usr){
 		}
 	} else return false;
 }
+//***********************
+$.ajax({
+	url: "/fpost",
+	type: "GET",
+	data: '',
+	cache: false,
+	success: function(response){
+		console.log('users post>>>>>',response); 
+	}
+});
+//***********************
 
 $.ajax({
 	url: "/userlistsocet",
