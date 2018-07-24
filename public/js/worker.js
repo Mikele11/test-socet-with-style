@@ -362,8 +362,7 @@ socket.on('chat message init', (messages) => {
     });
 */
 socket.on('connect', function (){
-	setTimeout(function(){
-		console.log('sender',document.getElementById('response').innerText)
+	setTimeout(function() {
 		socket.emit('remember user', $('#response').text());
 	},5000);
 });
@@ -372,9 +371,7 @@ socket.on('change', function (usersOnline){
 	setTimeout(function(){
 		console.log('on online>',usersOnline)
 		if (navigator.onLine == true){
-			console.log('on')
 			var x = document.getElementsByClassName("userp").length;
-			console.log( 'class',x);
 			$('#user-list>p').each(function( index ) {
 			  if (usersOnline.indexOf($( this ).text() ) != -1){
 				$( this ).css("background","greenyellow"); 
