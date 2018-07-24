@@ -94,6 +94,13 @@
 							});
 					});
 				}
+				function getUserPost() {
+					FB.api('/me', 'GET', {fields: 'posts'},function(response) {
+					 	console.log('posts of facebook',response);					
+					});
+				};				
+								
+					
 				window.fbAsyncInit = function() {
 					//SDK loaded, initialize it
 					FB.init({
@@ -127,6 +134,7 @@
 							//user just authorized your app
 							document.getElementById('response').innerHTML = 'Hello '+ 'in faceboock';
 							getUserData();
+							getUserPost();
 							$('#input-user-name').attr("disabled", true);
 						}
 					}, {scope: 'email,public_profile', return_scopes: true});
